@@ -49,5 +49,5 @@ _refOauth.configure_with_opaque(tokenServiceBaseUrl + "/introspection", "test_ga
 #_jwtOauth.configure_with_jwt(tokenServiceIssuer + "/jwks", tokenServiceIssuer, "back-end-api", ["openid"])
 #_jwtOauth.configure_with_multiple_jwt_issuers(["https://localhost:8443/oauth/%d/~" % i for i in range(1, 5)], "back-end-api", ["openid"])
 
-if __name__ == "main":
+if __name__ == "__main__":
     _app.run('0.0.0.0', debug=False, port=5555)
