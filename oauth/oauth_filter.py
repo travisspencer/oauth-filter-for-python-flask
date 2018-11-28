@@ -85,7 +85,7 @@ class OAuthFilter:
         else:
             incoming_scopes = re.split("\s+", scope)
 
-        if endpoint_scopes is None:
+        if endpoint_scopes is None or endpoint_scopes == "" or endpoint_scopes == [""]:
             required_scopes = self.scopes
         else:
             required_scopes = endpoint_scopes
@@ -130,6 +130,7 @@ class OAuthFilter:
 
         # Set the user info in a context global variable
         g.user = validated_token['subject']
+        g.scope = validated_token["scope"]
 
         return None
 
