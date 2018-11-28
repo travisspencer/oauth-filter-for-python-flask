@@ -27,13 +27,15 @@ def hello_world_options():
     return response
 
 @_app.route('/hello_world', methods=['GET', 'HEAD'])
-@_refOauth.protect(["openid"])
+@_refOauth.protect([""])
 def hello_world():
-    response = make_response(json.dumps(dict(hello=g.user)))
+    response = make_response(json.dumps(dict(hello=g.user, scope=g.scope)))
 
     if request.headers.get("Origin", None):
         response.headers["Access-Control-Allow-Origin"] = request.headers["Origin"]
         response.headers["Access-Control-Allow-Credentials"] = "true"
+
+    response.headers["x-fapi-interaction-id"] = request.headers.get("x-fapi-interaction-id", "E990656F-2C08-4B98-8FDD-BE7D7D9625FD")
 
     return response
 
@@ -45,7 +47,7 @@ def hello_world():
 tokenServiceBaseUrl = "https://localhost:8443"
 tokenServiceIssuer = tokenServiceBaseUrl + "/dev/oauth/anonymous"
 
-_refOauth.configure_with_opaque(tokenServiceBaseUrl + "/introspection", "test_gateway_client", "Password1")
+_refOauth.configure_with_opaque(tokenServiceBaseUrl + "/introspection", "test_gateway_client", "secret")
 #_jwtOauth.configure_with_jwt(tokenServiceIssuer + "/jwks", tokenServiceIssuer, "back-end-api", ["openid"])
 #_jwtOauth.configure_with_multiple_jwt_issuers(["https://localhost:8443/oauth/%d/~" % i for i in range(1, 5)], "back-end-api", ["openid"])
 
